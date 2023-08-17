@@ -119,3 +119,13 @@ with ZipFile("./MAESTRO_linux_x64.zip", 'r') as z:
 #Change Maestro rights [bash commands]
 chmod +x ./MAESTRO/MAESTRO_linux_x64/maestro
 ```
+
+## OmegaFold
+### Install
+```
+python ./OmegaFold/setup.py install
+```
+### Run
+```
+python ./OmegaFold/main.py INPUT_FILE.fasta OUTPUT_DIRECTORY
+```

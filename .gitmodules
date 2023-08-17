@@ -1,0 +1,3 @@
+[submodule "OmegaFold"]
+	path = OmegaFold
+	url = https://github.com/HeliXonProtein/OmegaFold.git
