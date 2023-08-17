@@ -1,3 +1,6 @@
 MAESTRO/
 dev.ipynb
 __pycache__/
+OmegaFold.egg-info/
+dist/
+build/

@@ -1,3 +1,6 @@
 [submodule "OmegaFold"]
 	path = OmegaFold
 	url = https://github.com/HeliXonProtein/OmegaFold.git
+[submodule "openfold"]
+	path = openfold
+	url = https://github.com/aqlaboratory/openfold.git
