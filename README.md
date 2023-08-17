@@ -129,3 +129,12 @@ python ./OmegaFold/setup.py install
 ```
 python ./OmegaFold/main.py INPUT_FILE.fasta OUTPUT_DIRECTORY
 ```
+
+## OpenFold
+### Install
+```
+cd openfold
+chmod +x /scripts/install_third_party_dependencies.sh
+source scripts/activate_conda_env.sh
+cd ..
+```

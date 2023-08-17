@@ -19,7 +19,7 @@ class BaseStats():
 
     def __call__(self):
         self._alignment = [":" if a == b else " " for a, b in zip(self.sequence_a, self.sequence_b)]
-        self._mutations = [(a, i+1, b) for i, (a, b) in enumerate(zip(self.sequence_a, self.sequence_b)) if not a == b]
+        self._mutations = [(a, i, b) for i, (a, b) in enumerate(zip(self.sequence_a, self.sequence_b)) if not a == b]
 
     @property
     def alignment(self):

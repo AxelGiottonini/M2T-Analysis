@@ -5,8 +5,8 @@ import requests
 import json
 import time
 
-from utils import safe_open, prune_dict
-from biosig import Biosig
+from .utils import safe_open, prune_dict
+from .biosig import Biosig
 
 if not os.path.isdir("./tmp"):
     os.mkdir("./tmp")
