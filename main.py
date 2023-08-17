@@ -2,9 +2,17 @@ import sys
 import os
 import pandas as pd
 
-from tqdm import tqdm
+from joblib import Parallel, delayed
 
 from src import BaseStats, DDMut, Maestro
+
+def summary_stats(i, base, mutated):
+    base_stats = BaseStats(base, mutated).result
+    ddmut = DDMut(mutations_list=base_stats.mutations, pdb_file=f"./tmp/struct_OmegaFold/sequence_{i}.pdb").result
+    maestro = Maestro(mutations_list=base_stats.mutations, pdb_file=f"./tmp/struct_OmegaFold/sequence_{i}.pdb").result
+
+    return ", ".join([str(base_stats.n_mutations), str(ddmut.prediction), str(maestro.score), str(maestro.dscore), str(maestro.ddg)])
+    
 
 if __name__ == "__main__":
 
@@ -17,17 +25,18 @@ if __name__ == "__main__":
         os.mkdir("./out")
 
     columns = ["n_mutations", "ddmut_prediction", "maestro_score", "maestro_dscore", "maestro_ddg"]
-    out = [", ".join(columns)]
 
-    for i, (base, mutated) in tqdm(enumerate(zip(base_sequences, mutated_sequences))):
-        if len(base) != len(mutated):
-            continue
-    
-        base_stats = BaseStats(base, mutated).result
-        ddmut = DDMut(mutations_list=base_stats.mutations, pdb_file=f"./tmp/struct_OmegaFold/sequence_{i}.pdb").result
-        maestro = Maestro(mutations_list=base_stats.mutations, pdb_file=f"./tmp/struct_OmegaFold/sequence_{i}.pdb").result
+    out = columns + Parallel(n_jobs=40)(delayed(summary_stats)(i, base, mutated) for i, (base, mutated) in enumerate(zip(base_sequences, mutated_sequences)) if len(base) == len(mutated))
 
-        out.append(", ".join([str(base_stats.n_mutations), str(ddmut.prediction), str(maestro.score), str(maestro.dscore), str(maestro.ddg)]))
+    #for i, (base, mutated) in tqdm(enumerate(zip(base_sequences, mutated_sequences))):
+    #    if len(base) != len(mutated):
+    #        continue
+    #
+    #    base_stats = BaseStats(base, mutated).result
+    #    ddmut = DDMut(mutations_list=base_stats.mutations, pdb_file=f"./tmp/struct_OmegaFold/sequence_{i}.pdb").result
+    #    maestro = Maestro(mutations_list=base_stats.mutations, pdb_file=f"./tmp/struct_OmegaFold/sequence_{i}.pdb").result
+    #
+    #    out.append(", ".join([str(base_stats.n_mutations), str(ddmut.prediction), str(maestro.score), str(maestro.dscore), str(maestro.ddg)]))
 
     out = "\n".join(out)
     with open(out_file, "w") as f:
