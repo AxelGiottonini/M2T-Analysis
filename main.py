@@ -24,9 +24,9 @@ if __name__ == "__main__":
     if not os.path.isdir("./out"):
         os.mkdir("./out")
 
-    columns = ["n_mutations", "ddmut_prediction", "maestro_score", "maestro_dscore", "maestro_ddg"]
+    columns = ", ".join(["n_mutations", "ddmut_prediction", "maestro_score", "maestro_dscore", "maestro_ddg"])
 
-    out = columns + Parallel(n_jobs=40)(delayed(summary_stats)(i, base, mutated) for i, (base, mutated) in enumerate(zip(base_sequences, mutated_sequences)) if len(base) == len(mutated))
+    out = [columns] + Parallel(n_jobs=40)(delayed(summary_stats)(i, base, mutated) for i, (base, mutated) in enumerate(zip(base_sequences, mutated_sequences)) if len(base) == len(mutated))
 
     out = "\n".join(out)
     with open(out_file, "w") as f:
