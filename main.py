@@ -28,16 +28,6 @@ if __name__ == "__main__":
 
     out = columns + Parallel(n_jobs=40)(delayed(summary_stats)(i, base, mutated) for i, (base, mutated) in enumerate(zip(base_sequences, mutated_sequences)) if len(base) == len(mutated))
 
-    #for i, (base, mutated) in tqdm(enumerate(zip(base_sequences, mutated_sequences))):
-    #    if len(base) != len(mutated):
-    #        continue
-    #
-    #    base_stats = BaseStats(base, mutated).result
-    #    ddmut = DDMut(mutations_list=base_stats.mutations, pdb_file=f"./tmp/struct_OmegaFold/sequence_{i}.pdb").result
-    #    maestro = Maestro(mutations_list=base_stats.mutations, pdb_file=f"./tmp/struct_OmegaFold/sequence_{i}.pdb").result
-    #
-    #    out.append(", ".join([str(base_stats.n_mutations), str(ddmut.prediction), str(maestro.score), str(maestro.dscore), str(maestro.ddg)]))
-
     out = "\n".join(out)
     with open(out_file, "w") as f:
         f.write(out)
